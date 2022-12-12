@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 CircularProgressBar(
                     percentage = 0.9f,
-                    number = 400,
+                    number = 500,
                 )
             }
         }
@@ -43,24 +43,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CircularProgressBar(
-    percentage: Float,
+    percentage: Float, //проценты
     fontSize: TextUnit = 28.sp,
-    number: Int,
-    radius: Dp = 50.dp,
+    number: Int, //число из которого будем находить процентную часть
+    radius: Dp = 50.dp, //грубо говоря эту штуку можно было бы заменить диаметром
     color: Color = LightBlue,
-    strokeWeight: Dp = 8.dp,
-    animDuration: Int = 1000,
-    animDelay: Int = 0,
+    strokeWeight: Dp = 8.dp, //толщина круговой полоски
+    animDuration: Int = 1000, // 1 сек
+    animDelay: Int = 0, // 0 сек
 ) {
 
-    var animationPlayed by remember {
-        mutableStateOf(false)
-    }
+    var animationPlayed by remember { mutableStateOf(false) } //ждем начала анимации
 
     val animateFloatState = animateFloatAsState(
-        targetValue = if (animationPlayed) percentage else 0f,
-        animationSpec = tween(durationMillis = animDuration,delayMillis = animDelay)
-    )
+        targetValue = if (animationPlayed) percentage else 0f, /* если делаем активным
+        то устанавливаем проценты, если нет то 0*/
+        animationSpec = tween(durationMillis = animDuration, delayMillis = animDelay) //анимация
+    ) //слежка за состоянием анимации
 
 
     LaunchedEffect(key1 = true) {
@@ -70,10 +69,10 @@ fun CircularProgressBar(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(radius * 2f)
+        modifier = Modifier.size(radius * 2)
     ) {
-        Canvas(modifier = Modifier.size(radius * 2f)) {
-            drawArc(
+        Canvas(modifier = Modifier.size(radius * 2)) {
+            drawArc( //рисует контур окружности
                 color = color,
                 -90f,
                 360 * animateFloatState.value,
